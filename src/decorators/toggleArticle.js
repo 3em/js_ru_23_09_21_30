@@ -4,10 +4,12 @@ export default function toggleArticle(Component) {
 
   return class WrapperArticle extends React.Component {
     static PropTypes = {
+      //Нет, в декораторе ты вообще не должен знать что за пропсы ожидаются
       articles: PropTypes.object.isRequired
     }
 
     state = {
+      //не привязывайся к названию сущности, в декораторах должен быть общий функционал. Используй, например, openItemId 
       openArticleId: null
     }
 
