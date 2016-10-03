@@ -1,20 +1,51 @@
-import React, { Component } from 'react'
-import CommentsSection from './CommentsSection';
+import React, { Component, PropTypes } from 'react'
+import CommentList from './CommentList'
 
 export default class Article extends Component {
-
-    state = {
-        isOpen: false
+    static propTypes = {
+        article: PropTypes.object.isRequired,
+        isOpen: PropTypes.bool.isRequired,
+        openArticle: PropTypes.func.isRequired
     }
 
-    render() {
-        const { article, comments } = this.props
-        const { isOpen } = this.state
-        const body = isOpen ? <section>{article.text}<CommentsSection comments={comments} commentsId={article.comments} /></section> : null
+    static defaultProps = {
 
+    }
+    
+    componentWillMount() {
+        console.log('---', 'mounting')
+    }
+
+    componentDidMount() {
+        console.log('---', 'mounted')
+    }
+
+    componentWillUnmount() {
+        console.log('---', 'unmounting')
+    }
+
+    constructor(props) {
+        super()
+        this.state = {
+            foo: 'bar'
+        }
+    }
+
+/*
+    state = {
+        isOpen: false,
+        foo: 'bar'
+    }
+*/
+
+    render() {
+        const { article, isOpen, openArticle } = this.props
+
+        const body = isOpen ? <section>{article.text}<CommentList comments = {article.comments} /></section> : null
+        // <section style = {{display: isOpen ? 'block' : 'none'}}>{article.text}</section>
         return (
             <div>
-                <h3 onClick = {this.toggleOpen}>{article.title}</h3>
+                <h3 onClick = {openArticle}>{article.title}</h3>
                 {body}
             </div>
         )
@@ -26,3 +57,14 @@ export default class Article extends Component {
         })
     }
 }
+
+/*
+export default (props) => {
+    const { article } = props
+    return (
+        <div>
+            <h3>{article.title}</h3>
+            <section>{article.text}</section>
+        </div>
+    )
+}*/

@@ -1,13 +1,24 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import Article from './Article'
+import toggleArticle from './decorators/toggleArticle'
 
-export default (props) => {
-    const { normalizedArticles, normalizedComments } = props
+function ArticleList(props) {
+    const { articles, openArticleId, toggleArticle } = props
 
-    const articleComponents = normalizedArticles.map(normalizedArticles => <li key={normalizedArticles.id}><Article article = {normalizedArticles} comments = {normalizedComments}/></li>)
+    const articleComponents = articles.map(article => (
+        <li key={article.id}>
+            <Article article = {article} isOpen = {article.id == openArticleId}
+                     openArticle = {toggleArticle(article.id)}/>
+        </li>
+        )
+    )
     return (
-        <ul>
-            {articleComponents}
-        </ul>
+        <div>
+            <ul>
+                {articleComponents}
+            </ul>
+        </div>
     )
 }
+
+export default toggleArticle(ArticleList);
