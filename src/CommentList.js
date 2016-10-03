@@ -5,6 +5,10 @@ import toggleOpen from './decorators/toggleOpen'
 
 //вопрос а как тут вот описать propTypes ?
 
+CommentList.propTypes = {
+    comments: PropTypes.array
+}
+
 function CommentList(props) {
     const { comments, isOpen, toggleOpen } = props
     if (!comments || !comments.length) return <p>No comments yet</p>
