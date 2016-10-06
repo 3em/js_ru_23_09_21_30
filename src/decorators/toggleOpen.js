@@ -1,12 +1,8 @@
 // decorator === HOC === Higher Order Component
-import React, {PropTypes} from 'react'
+import React from 'react'
 
 export default function toggleOpen(Component) {
-    return class WrapperComponent extends React.Component {
-        static PropTypes = {
-            comments: PropTypes.array
-        }
-
+    return class ToggleOpen extends React.Component {
         state = {
             isOpen: false
         }
@@ -17,8 +13,6 @@ export default function toggleOpen(Component) {
                 isOpen: !this.state.isOpen
             })
         }
-
-
 
         render() {
             return <Component {...this.props} {...this.state} toggleOpen = {this.toggleOpen}/>
