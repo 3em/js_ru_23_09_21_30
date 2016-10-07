@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import Select from 'react-select'
 import moment from 'moment'
 import DayPicker, { DateUtils } from "react-day-picker"
+//получается большой компонент, лучше вынести календарь отдельно
 
 import 'react-select/dist/react-select.css'
 import 'react-day-picker/lib/style.css';
@@ -124,6 +125,7 @@ class Filters extends Component {
                     />
                     { !from && !to && <p>Выберите <strong>первый день</strong>.</p> }
                     { from && !to && <p>Выберите <strong>последний день</strong>.</p> }
+                    {/*Не пиши столько кода в JSX*/}
                     { from && to &&
                     <p>
                         С { moment(from).format('LL') } по { moment(to).format('LL') } надо играть в лоттерею.
