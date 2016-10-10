@@ -17,7 +17,7 @@ class ArticleList extends Component {
         let statusSelectHidden = false
         let statusDateHidden = false
         let arrayShow = []
-
+        //лучше логику фильтрации в коннект вынести
         if (date.from && date.to){
             let from = new Date(moment(date.from).format('LLLL'))
             let to = new Date(moment(date.to).format('LLLL'))
