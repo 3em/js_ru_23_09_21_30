@@ -5,6 +5,7 @@ export default (filters = null, action) => {
 
   switch (type) {
     case FILTER_SELECT_ARTICLE:
+      //присвоения в обоих редсерах лишнее
       return filters = payload
   }
 
