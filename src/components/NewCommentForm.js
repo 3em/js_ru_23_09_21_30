@@ -15,7 +15,10 @@ class NewCommentForm extends Component {
 
     handleSubmit = ev => {
         ev.preventDefault()
-        console.log('---', this.state)
+        const { text, user} = this.state
+        const {addComment, articleId} = this.props
+
+        addComment(articleId, text, user)
         this.setState({
             user: '',
             text: ''
@@ -25,8 +28,8 @@ class NewCommentForm extends Component {
     render() {
         return (
             <form onSubmit = {this.handleSubmit}>
-                comment: <input type="text" value={this.state.text} onChange = {this.handleChange('text')}/>
-                comment: <input type="text" value={this.state.user} onChange = {this.handleChange('user')}/>
+                Text: <input type="text" value={this.state.text} onChange = {this.handleChange('text')}/><br/>
+                User: <input type="text" value={this.state.user} onChange = {this.handleChange('user')}/><br/>
                 <input type = "submit"/>
             </form>
         )

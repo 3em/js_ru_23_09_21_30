@@ -1,18 +1,9 @@
 import { combineReducers } from 'redux'
 import count from './counter'
 import articles from './articles'
-//лучше объеденить в один filters редюсер
-import filterSelect from './filter-select'
-import filterDate from './filter-date'
+import comments from './comments'
+import filters from './filters'
 
 export default combineReducers({
-    count, articles, filterSelect, filterDate
+    articles, comments, count, filters
 })
-
-
-/*
-export default combineReducers({
-    count: counterReducer,
-    articles: articleReducer
-})
-*/

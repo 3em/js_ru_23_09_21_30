@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import Article from './Article'
 import accordion from './../decorators/accordion'
-import moment from 'moment'
-import range from "moment-range"
+import { addComment } from '../AC/comments'
 import { connect } from 'react-redux'
 
 class ArticleList extends Component {
@@ -13,43 +12,13 @@ class ArticleList extends Component {
         isItemOpen: PropTypes.func.isRequired
     };
 
-    makeFilterArticle = (article, toggleItem, isItemOpen, filterSelect, date) => {
-        let statusSelectHidden = false
-        let statusDateHidden = false
-        let arrayShow = []
-        //лучше логику фильтрации в коннект вынести
-        if (date.from && date.to){
-            let from = new Date(moment(date.from).format('LLLL'))
-            let to = new Date(moment(date.to).format('LLLL'))
-            let range = moment().range(from, to)
-            let articleDate = new Date(moment(article.date).format('LLLL'))
-            if (!range.contains(articleDate)){
-                statusDateHidden = true
-            }
-        }
-
-
-        if (filterSelect && filterSelect.length > 0) {
-            filterSelect.map(filter => {
-                if (article.id == filter.value)
-                    arrayShow.push(filter.value)
-            })
-            arrayShow.indexOf(article.id) < 0 ? statusSelectHidden = true : statusSelectHidden = false
-        }
-
-        return (
-            <li key={article.id} hidden={statusSelectHidden || statusDateHidden ? 'hidden' : ''}>
-              <Article article = {article} filterSelect = {filterSelect} isOpen = {isItemOpen(article.id)} openArticle = {toggleItem(article.id)} />
-            </li>
-        )
-    }
-
     render() {
-        const { articles, toggleItem, isItemOpen, filterSelect, date } = this.props
+        const { articles, toggleItem, isItemOpen, addComment } = this.props
 
         const articleComponents = articles.map(article => (
-            this.makeFilterArticle(article, toggleItem, isItemOpen, filterSelect, date)
-        ))
+            <li key={article.id} >
+                <Article addComment={addComment} article = {article} isOpen = {isItemOpen(article.id)} openArticle = {toggleItem(article.id)} />
+            </li>))
 
         return (
             <ul>
@@ -59,8 +28,19 @@ class ArticleList extends Component {
     }
 }
 
-export default connect(state => ({
-    articles: state.articles,
-    filterSelect: state.filterSelect,
-    date: state.filterDate
-}))(accordion(ArticleList))
+export default connect(state => {
+    const { articles, filters } = state
+    const articleList = Object.keys(articles).map(id => articles[id])
+    const selected = filters.get('selected')
+    const { from, to } = filters.get('dateRange')
+
+    const filteredArticles = articleList.filter(article => {
+        //console.log(article)
+        const published = Date.parse(article.date)
+        return (!selected.length || selected.includes(article.id)) &&
+            (!from || !to || (published > from && published < to))
+    })
+    return {
+        articles: filteredArticles
+    }
+}, {addComment})(accordion(ArticleList))

@@ -1,35 +1,34 @@
 import React, { Component } from 'react'
 import DayPicker, { DateUtils } from 'react-day-picker'
-import { dateFilterValue } from '../AC/filter'
 import { connect } from 'react-redux'
+import { changeDateRange } from '../AC/filters'
 
 import 'react-day-picker/lib/style.css';
 
 class DatePicker extends Component {
 
     handleDayClick = (e, day) => {
-        const {date, dateFilterValue} = this.props
-        const range = DateUtils.addDayToRange(day, date)
-        dateFilterValue(range);
+        const { changeDateRange, range } = this.props
+        changeDateRange(DateUtils.addDayToRange(day, range))
     }
 
     render() {
-        const { from, to } = this.props.date;
+        const { from, to } = this.props.range;
         const selectedRange = from && to && `${from.toDateString()} - ${to.toDateString()}`
         return (
-          <div className="date-range">
-              <DayPicker
-                ref="daypicker"
-                selectedDays={ day => DateUtils.isDayInRange(day, { from, to }) }
-                onDayClick={ this.handleDayClick }
-              />
-              {selectedRange}
-          </div>
+            <div className="date-range">
+                <DayPicker
+                    ref="daypicker"
+                    selectedDays={ day => DateUtils.isDayInRange(day, { from, to }) }
+                    onDayClick={ this.handleDayClick }
+                />
+                {selectedRange}
+            </div>
         );
     }
 
 }
 
 export default connect(state => ({
-    date: state.filterDate
-}),{dateFilterValue})(DatePicker)
+    range: state.filters.get('dateRange')
+}), { changeDateRange })(DatePicker)
