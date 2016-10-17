@@ -23,6 +23,7 @@ export default (articles = arrayToMap(normalizedArticles), action) => {
 
         case ADD_COMMENT: {
             const { articleId, newCommentId } = payload
+            //и снова мутируешь cтатью
             articles[articleId].comments.push(newCommentId)
             return Object.keys(articles).reduce((acc, id) => ({...acc, [id]: articles[id]}), {})
         }
